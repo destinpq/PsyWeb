@@ -191,4 +191,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For support and questions:
 - Email: support@psychology-website.com
 - Documentation: [Link to docs]
-- Issues: [GitHub Issues](https://github.com/destinpq/psychology-website-fe/issues) 
+- Issues: [GitHub Issues](https://github.com/destinpq/psychology-website-fe/issues) # PsyWeb
