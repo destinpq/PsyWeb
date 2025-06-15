@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* Clean White background */
+    --foreground: 224 71.4% 4.1%; /* Dark Blue/Gray for text (professional) */
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+
+    --primary: 237 33% 82%; /* Logo Lavender: #C5C6E0 */
+    --primary-foreground: 224 71.4% 4.1%; /* Dark text on lavender for readability */
+
+    --secondary: 237 30% 90%; /* Lighter Lavender/Periwinkle for subtle backgrounds or accents */
+    --secondary-foreground: 224 71.4% 4.1%;
+
+    --muted: 240 4.8% 95.9%; /* Light Gray for muted elements */
+    --muted-foreground: 240 3.8% 46.1%; /* Medium Gray for muted text */
+
+    --accent: 237 33% 75%; /* Slightly darker/more saturated Lavender for hover/active states */
+    --accent-foreground: 224 71.4% 4.1%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 237 20% 85%; /* Softer border color, related to lavender */
+    --input: 237 20% 90%;
+    --ring: 237 33% 70%; /* Lavender for focus rings */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Define dark mode colors if needed */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 170 40% 45%; /* Lighter Teal for dark mode primary */
+    --primary-foreground: 240 10% 3.9%;
+
+    --secondary: 237 33% 70%; /* Darker Lavender for dark mode secondary */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 170 40% 55%;
+    --accent-foreground: 240 10% 3.9%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 170 40% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
