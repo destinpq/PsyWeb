@@ -12,9 +12,12 @@
 
 # debug
 npm-debug.log*
+.pnpm-debug.log*
+
+# yarn (not used)
+yarn.lock
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
 # env files
 .env*
