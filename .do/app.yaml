@@ -1,0 +1,25 @@
+name: psychology-website
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: destinpq/PsyWeb
+    branch: main
+  run_command: npm start
+  build_command: npm run build
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 3000
+  routes:
+  - path: /
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: NEXT_TELEMETRY_DISABLED
+    value: "1"
+  - key: NEXT_PUBLIC_API_URL
+    value: ${BACKEND_URL}/api
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED 
