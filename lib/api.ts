@@ -1,6 +1,6 @@
 const API_BASE_URL = typeof window !== 'undefined' 
   ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
-  : 'http://localhost:3001/api';
+  : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 // Types based on backend entities
 export interface User {
