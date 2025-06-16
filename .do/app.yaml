@@ -3,7 +3,7 @@ services:
 - name: web
   source_dir: /
   github:
-    repo: destinpq/PsyWeb
+    repo: destinpq/PsyWeb-FE
     branch: main
   run_command: npm start
   build_command: npm run build
@@ -15,11 +15,13 @@ services:
   - path: /
   envs:
   - key: NODE_ENV
-    value: production
+    value: "production"
   - key: NEXT_TELEMETRY_DISABLED
     value: "1"
   - key: NEXT_PUBLIC_API_URL
-    value: ${BACKEND_URL}/api
+    value: "https://psyweb-be-bnhqb.ondigitalocean.app"
+  - key: API_URL
+    value: "https://psyweb-be-bnhqb.ondigitalocean.app"
 alerts:
 - rule: DEPLOYMENT_FAILED
 - rule: DOMAIN_FAILED 
