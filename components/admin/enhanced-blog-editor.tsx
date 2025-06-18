@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Image, FileText, Settings, Eye, Upload } from "lucide-react"
+import { Loader2, Image, FileText, Settings, Eye, Upload, Video, File, X } from "lucide-react"
 import { api, BlogPost } from '@/lib/api'
 
 interface EnhancedBlogEditorProps {
@@ -32,6 +32,15 @@ interface FormData {
   status: string
 }
 
+interface UploadedFile {
+  url: string
+  filename: string
+  originalName: string
+  size: string
+  mimetype: string
+  fileType: 'image' | 'video' | 'pdf'
+}
+
 export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: EnhancedBlogEditorProps) {
   const [formData, setFormData] = useState<FormData>({
     title: post?.title || '',
@@ -49,6 +58,7 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('content')
   const [preview, setPreview] = useState(false)
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -71,7 +81,7 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
     }
   }
 
-  const insertImageInContent = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -79,14 +89,64 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
     setError('')
 
     try {
-      const result = await api.uploadImage(file)
-      const imageMarkdown = `\n\n![${result.originalName}](${result.url})\n\n`
-      handleInputChange('content', formData.content + imageMarkdown)
+      const result = await api.uploadMedia(file)
+      
+      // Add to uploaded files list
+      setUploadedFiles(prev => [...prev, {
+        url: result.url,
+        filename: result.filename,
+        originalName: result.originalName,
+        size: result.size,
+        mimetype: result.mimetype,
+        fileType: result.fileType as 'image' | 'video' | 'pdf'
+      }])
+
+      // Insert markdown into content
+      const currentContent = formData.content
+      const insertPosition = currentContent.length
+      const newContent = currentContent.slice(0, insertPosition) + '\n\n' + result.markdown + '\n\n' + currentContent.slice(insertPosition)
+      handleInputChange('content', newContent)
+      
     } catch (err: any) {
-      setError(err.message || 'Failed to upload image')
+      setError(err.message || 'Failed to upload file')
     } finally {
       setUploading(false)
     }
+  }
+
+  const removeUploadedFile = (filename: string) => {
+    setUploadedFiles(prev => prev.filter(file => file.filename !== filename))
+    
+    // Remove from content as well
+    const content = formData.content
+    const lines = content.split('\n')
+    const filteredLines = lines.filter(line => !line.includes(filename))
+    handleInputChange('content', filteredLines.join('\n'))
+  }
+
+  const insertFileReference = (file: UploadedFile) => {
+    let markdown = ''
+    switch (file.fileType) {
+      case 'image':
+        markdown = `![${file.originalName}](${file.url})`
+        break
+      case 'video':
+        markdown = `<video controls width="100%" style="max-width: 800px;">
+  <source src="${file.url}" type="${file.mimetype}">
+  Your browser does not support the video tag.
+</video>
+
+*Video: ${file.originalName}*`
+        break
+      case 'pdf':
+        markdown = `[📄 ${file.originalName}](${file.url})
+
+*PDF Document - Click to view*`
+        break
+    }
+    
+    const currentContent = formData.content
+    handleInputChange('content', currentContent + '\n\n' + markdown + '\n\n')
   }
 
   const estimateReadTime = (content: string) => {
@@ -146,6 +206,19 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
     'Case Studies'
   ]
 
+  const renderFileIcon = (fileType: string) => {
+    switch (fileType) {
+      case 'image':
+        return <Image className="h-4 w-4" />
+      case 'video':
+        return <Video className="h-4 w-4" />
+      case 'pdf':
+        return <File className="h-4 w-4" />
+      default:
+        return <FileText className="h-4 w-4" />
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[1200px] max-h-[90vh] overflow-hidden">
@@ -155,7 +228,7 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
             <span>{post ? 'Edit Blog Post' : 'Create New Blog Post'}</span>
           </DialogTitle>
           <DialogDescription>
-            {post ? 'Update your blog post content and settings' : 'Create a new blog post for your website'}
+            {post ? 'Update your blog post content and settings' : 'Create a new blog post with rich media support'}
           </DialogDescription>
         </DialogHeader>
 
@@ -231,19 +304,19 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
                         <div className="flex items-center space-x-2">
                           <input
                             type="file"
-                            accept="image/*"
-                            onChange={insertImageInContent}
+                            accept="image/*,video/*,.pdf"
+                            onChange={handleMediaUpload}
                             style={{ display: 'none' }}
-                            id="contentImageUpload"
+                            id="mediaUpload"
                           />
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => document.getElementById('contentImageUpload')?.click()}
+                            onClick={() => document.getElementById('mediaUpload')?.click()}
                             disabled={uploading}
                           >
                             <Upload className="h-4 w-4 mr-2" />
-                            Insert Image
+                            Insert Media
                           </Button>
                           {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
                         </div>
@@ -252,7 +325,7 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
                         id="content"
                         value={formData.content}
                         onChange={(e) => handleInputChange('content', e.target.value)}
-                        placeholder="Write your blog post content here. You can use Markdown formatting..."
+                        placeholder="Write your blog post content here. You can use Markdown formatting and insert images, videos, and PDFs..."
                         rows={15}
                         className="font-mono"
                         required
@@ -270,13 +343,17 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
                         <p className="text-gray-600 mb-6 italic">{formData.excerpt}</p>
                         <div className="prose max-w-none">
                           {formData.content.split('\n').map((paragraph, index) => (
-                            <p key={index} className="mb-4">
+                            <div key={index} className="mb-4">
                               {paragraph.includes('![') ? (
                                 <span className="text-blue-600 italic">[Image: {paragraph}]</span>
+                              ) : paragraph.includes('<video') ? (
+                                <span className="text-purple-600 italic">[Video Player]</span>
+                              ) : paragraph.includes('[📄') ? (
+                                <span className="text-red-600 italic">[PDF Document]</span>
                               ) : (
-                                paragraph
+                                <p>{paragraph}</p>
                               )}
-                            </p>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -334,6 +411,78 @@ export function EnhancedBlogEditor({ post, open, onOpenChange, onSuccess }: Enha
                       placeholder="https://example.com/image.jpg"
                     />
                   </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Upload className="h-4 w-4" />
+                    <span>Media Library</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Upload and manage images, videos, and PDFs for your blog post
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Upload Media Files</Label>
+                    <input
+                      type="file"
+                      accept="image/*,video/*,.pdf"
+                      onChange={handleMediaUpload}
+                      style={{ display: 'none' }}
+                      id="mediaLibraryUpload"
+                      multiple
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => document.getElementById('mediaLibraryUpload')?.click()}
+                      disabled={uploading}
+                      className="w-full"
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Upload Images, Videos, or PDFs
+                    </Button>
+                    <div className="text-sm text-gray-500">
+                      Supported formats: Images (JPEG, PNG, GIF, WebP), Videos (MP4, WebM, OGG), PDFs
+                    </div>
+                  </div>
+
+                  {uploadedFiles.length > 0 && (
+                    <div className="space-y-2">
+                      <Label>Uploaded Files</Label>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        {uploadedFiles.map((file, index) => (
+                          <div key={index} className="flex items-center justify-between p-2 border rounded">
+                            <div className="flex items-center space-x-2">
+                              {renderFileIcon(file.fileType)}
+                              <div>
+                                <div className="text-sm font-medium">{file.originalName}</div>
+                                <div className="text-xs text-gray-500">{file.size} • {file.fileType}</div>
+                              </div>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => insertFileReference(file)}
+                              >
+                                Insert
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeUploadedFile(file.filename)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>

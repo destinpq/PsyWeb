@@ -433,6 +433,75 @@ class ApiClient {
     return response.json();
   }
 
+  async uploadVideo(file: File): Promise<{ url: string; filename: string; originalName: string; size: string; mimetype: string; fileType: string }> {
+    const formData = new FormData();
+    formData.append('video', file);
+
+    const headers: Record<string, string> = {};
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${this.baseUrl}/upload/video`, {
+      method: 'POST',
+      body: formData,
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async uploadPdf(file: File): Promise<{ url: string; filename: string; originalName: string; size: string; mimetype: string; fileType: string }> {
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    const headers: Record<string, string> = {};
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${this.baseUrl}/upload/pdf`, {
+      method: 'POST',
+      body: formData,
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async uploadMedia(file: File): Promise<{ url: string; filename: string; originalName: string; size: string; mimetype: string; fileType: string; markdown: string }> {
+    const formData = new FormData();
+    formData.append('media', file);
+
+    const headers: Record<string, string> = {};
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${this.baseUrl}/upload/media`, {
+      method: 'POST',
+      body: formData,
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
   // Admin Dashboard methods
   async getAdminDashboardStats(): Promise<any> {
     return this.request('/admin/dashboard/stats');
@@ -525,6 +594,9 @@ export const api = {
 
   // File upload
   uploadImage: (file: File) => apiClient.uploadImage(file),
+  uploadVideo: (file: File) => apiClient.uploadVideo(file),
+  uploadPdf: (file: File) => apiClient.uploadPdf(file),
+  uploadMedia: (file: File) => apiClient.uploadMedia(file),
 
   // Admin Dashboard methods
   getAdminDashboardStats: () => apiClient.getAdminDashboardStats(),
