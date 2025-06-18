@@ -13,6 +13,7 @@ const nextConfig = {
   pageExtensions: ['tsx', 'ts'],
   // Ensure we're using App Router
   trailingSlash: false,
+
 }
 
 export default nextConfig

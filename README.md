@@ -47,7 +47,7 @@ yarn dev
 Create a `.env.local` file with:
 
 ```bash
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
+NEXT_PUBLIC_API_URL=http://localhost:13001/api
 ```
 
 For production, update the API URL to your deployed backend.

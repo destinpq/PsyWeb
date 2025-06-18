@@ -54,6 +54,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         router.push('/admin/login')
         return
       }
+      
+      // Set token in API client for authenticated requests
+      api.setToken(token, true)
       setAdminUser(userData)
     } catch (error) {
       router.push('/admin/login')

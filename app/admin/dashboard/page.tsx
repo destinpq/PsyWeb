@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Users, Calendar, MessageSquare, FileText, TrendingUp, Clock } from "lucide-react"
 import AdminLayout from '@/components/admin/admin-layout'
 import { api } from '@/lib/api'
-import { useAPI } from '@/hooks/use-api'
 
 interface DashboardStats {
   totalUsers: number
@@ -30,20 +29,26 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [users, appointments, messages, blogPosts] = await Promise.all([
-          api.getUsers(),
-          api.getAppointments(),
-          api.getContactMessages(),
-          api.getBlogPosts()
+        const [usersResponse, appointmentsResponse, messagesResponse, blogPostsResponse] = await Promise.all([
+          api.getAdminPatients(),
+          api.getAdminAppointments(),
+          api.getAdminMessages(),
+          api.getAdminBlogPosts()
         ])
+
+        // Handle pagination response format
+        const users = usersResponse.patients || []
+        const appointments = appointmentsResponse.appointments || []
+        const messages = messagesResponse.messages || []
+        const blogPosts = blogPostsResponse.posts || []
 
         setStats({
           totalUsers: users.length,
           totalAppointments: appointments.length,
-          pendingAppointments: appointments.filter(a => a.status === 'pending').length,
-          unreadMessages: messages.filter(m => m.status === 'unread').length,
+          pendingAppointments: appointments.filter((a: any) => a.status === 'pending').length,
+          unreadMessages: messages.filter((m: any) => m.status === 'unread').length,
           totalBlogPosts: blogPosts.length,
-          publishedBlogPosts: blogPosts.filter(b => b.status === 'published').length
+          publishedBlogPosts: blogPosts.filter((b: any) => b.status === 'published').length
         })
       } catch (error) {
         console.error('Error fetching dashboard stats:', error)

@@ -21,6 +21,251 @@ const statusColors = {
   archived: 'bg-red-100 text-red-800'
 }
 
+interface FormData {
+  title: string
+  excerpt: string
+  content: string
+  category: string
+  readTime: string
+  tags: string
+  featuredImage: string
+  status: string
+}
+
+interface CreateBlogDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  formData: FormData
+  setFormData: (data: FormData | ((prev: FormData) => FormData)) => void
+  onSubmit: () => void
+  actionLoading: boolean
+}
+
+const CreateBlogDialog = ({ open, onOpenChange, formData, setFormData, onSubmit, actionLoading }: CreateBlogDialogProps) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+      <DialogHeader>
+        <DialogTitle>Create New Blog Post</DialogTitle>
+        <DialogDescription>Add a new blog post</DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            value={formData.title}
+            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+            placeholder="Enter blog post title"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="excerpt">Excerpt</Label>
+          <Textarea
+            id="excerpt"
+            value={formData.excerpt}
+            onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
+            placeholder="Brief description of the post..."
+            rows={3}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="content">Content</Label>
+          <Textarea
+            id="content"
+            value={formData.content}
+            onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+            placeholder="Write your blog post content here..."
+            rows={8}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Input
+              id="category"
+              value={formData.category}
+              onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+              placeholder="Psychology, Therapy, etc."
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="readTime">Read Time (Optional)</Label>
+            <Input
+              id="readTime"
+              value={formData.readTime}
+              onChange={(e) => setFormData(prev => ({ ...prev, readTime: e.target.value }))}
+              placeholder="5 min read"
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="tags">Tags (Optional)</Label>
+          <Input
+            id="tags"
+            value={formData.tags}
+            onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
+            placeholder="mental health, therapy, wellness"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="featuredImage">Featured Image URL (Optional)</Label>
+          <Input
+            id="featuredImage"
+            value={formData.featuredImage}
+            onChange={(e) => setFormData(prev => ({ ...prev, featuredImage: e.target.value }))}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="status">Status</Label>
+          <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="published">Published</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <DialogFooter>
+        <Button variant="outline" onClick={() => onOpenChange(false)}>
+          Cancel
+        </Button>
+        <Button onClick={onSubmit} disabled={actionLoading}>
+          {actionLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            'Create Post'
+          )}
+        </Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+)
+
+interface EditBlogDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  formData: FormData
+  setFormData: (data: FormData | ((prev: FormData) => FormData)) => void
+  onSubmit: () => void
+  actionLoading: boolean
+}
+
+const EditBlogDialog = ({ open, onOpenChange, formData, setFormData, onSubmit, actionLoading }: EditBlogDialogProps) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+      <DialogHeader>
+        <DialogTitle>Edit Blog Post</DialogTitle>
+        <DialogDescription>Update blog post information</DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        <div className="space-y-2">
+          <Label htmlFor="edit-title">Title</Label>
+          <Input
+            id="edit-title"
+            value={formData.title}
+            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+            placeholder="Enter blog post title"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="edit-excerpt">Excerpt</Label>
+          <Textarea
+            id="edit-excerpt"
+            value={formData.excerpt}
+            onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
+            placeholder="Brief description of the post..."
+            rows={3}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="edit-content">Content</Label>
+          <Textarea
+            id="edit-content"
+            value={formData.content}
+            onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+            placeholder="Write your blog post content here..."
+            rows={8}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="edit-category">Category</Label>
+            <Input
+              id="edit-category"
+              value={formData.category}
+              onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+              placeholder="Psychology, Therapy, etc."
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-readTime">Read Time (Optional)</Label>
+            <Input
+              id="edit-readTime"
+              value={formData.readTime}
+              onChange={(e) => setFormData(prev => ({ ...prev, readTime: e.target.value }))}
+              placeholder="5 min read"
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="edit-tags">Tags (Optional)</Label>
+          <Input
+            id="edit-tags"
+            value={formData.tags}
+            onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
+            placeholder="mental health, therapy, wellness"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="edit-featuredImage">Featured Image URL (Optional)</Label>
+          <Input
+            id="edit-featuredImage"
+            value={formData.featuredImage}
+            onChange={(e) => setFormData(prev => ({ ...prev, featuredImage: e.target.value }))}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="edit-status">Status</Label>
+          <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="published">Published</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <DialogFooter>
+        <Button variant="outline" onClick={() => onOpenChange(false)}>
+          Cancel
+        </Button>
+        <Button onClick={onSubmit} disabled={actionLoading}>
+          {actionLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Updating...
+            </>
+          ) : (
+            'Update Post'
+          )}
+        </Button>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+)
+
 export default function AdminBlog() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
@@ -28,7 +273,17 @@ export default function AdminBlog() {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [formData, setFormData] = useState({
+  const [createFormData, setCreateFormData] = useState({
+    title: '',
+    excerpt: '',
+    content: '',
+    category: '',
+    readTime: '',
+    tags: '',
+    featuredImage: '',
+    status: 'draft'
+  })
+  const [editFormData, setEditFormData] = useState({
     title: '',
     excerpt: '',
     content: '',
@@ -49,8 +304,8 @@ export default function AdminBlog() {
   const fetchBlogPosts = async () => {
     try {
       setLoading(true)
-      const blogData = await api.getBlogPosts()
-      setBlogPosts(blogData)
+      const blogData = await api.getAdminBlogPosts()
+      setBlogPosts(blogData.posts)
     } catch (error) {
       setError('Failed to fetch blog posts')
       console.error('Error fetching blog posts:', error)
@@ -65,7 +320,7 @@ export default function AdminBlog() {
 
   const handleEdit = (post: BlogPost) => {
     setSelectedPost(post)
-    setFormData({
+    setEditFormData({
       title: post.title,
       excerpt: post.excerpt,
       content: post.content,
@@ -79,7 +334,7 @@ export default function AdminBlog() {
   }
 
   const handleCreate = () => {
-    setFormData({
+    setCreateFormData({
       title: '',
       excerpt: '',
       content: '',
@@ -98,15 +353,16 @@ export default function AdminBlog() {
     setSuccess('')
 
     try {
+      const currentFormData = isEdit ? editFormData : createFormData
       const blogData = {
-        title: formData.title,
-        excerpt: formData.excerpt,
-        content: formData.content,
-        category: formData.category,
-        readTime: formData.readTime || undefined,
-        tags: formData.tags || undefined,
-        featuredImage: formData.featuredImage || undefined,
-        status: formData.status as any
+        title: currentFormData.title,
+        excerpt: currentFormData.excerpt,
+        content: currentFormData.content,
+        category: currentFormData.category,
+        readTime: currentFormData.readTime || undefined,
+        tags: currentFormData.tags || undefined,
+        featuredImage: currentFormData.featuredImage || undefined,
+        status: currentFormData.status as any
       }
 
       if (isEdit && selectedPost) {
@@ -160,7 +416,9 @@ export default function AdminBlog() {
   }
 
   const handleDelete = async (postId: string) => {
-    if (!confirm('Are you sure you want to delete this blog post?')) return
+    if (!window.confirm('Are you sure you want to delete this blog post?')) {
+      return
+    }
 
     setActionLoading(true)
     setError('')
@@ -184,116 +442,6 @@ export default function AdminBlog() {
       day: 'numeric'
     })
   }
-
-  const BlogDialog = ({ isEdit, open, onOpenChange }: { isEdit: boolean, open: boolean, onOpenChange: (open: boolean) => void }) => (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{isEdit ? 'Edit Blog Post' : 'Create New Blog Post'}</DialogTitle>
-          <DialogDescription>
-            {isEdit ? 'Update blog post information' : 'Add a new blog post'}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="Enter blog post title"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="excerpt">Excerpt</Label>
-            <Textarea
-              id="excerpt"
-              value={formData.excerpt}
-              onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
-              placeholder="Brief description of the post..."
-              rows={3}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="content">Content</Label>
-            <Textarea
-              id="content"
-              value={formData.content}
-              onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-              placeholder="Write your blog post content here..."
-              rows={8}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
-              <Input
-                id="category"
-                value={formData.category}
-                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                placeholder="Psychology, Therapy, etc."
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="readTime">Read Time (Optional)</Label>
-              <Input
-                id="readTime"
-                value={formData.readTime}
-                onChange={(e) => setFormData(prev => ({ ...prev, readTime: e.target.value }))}
-                placeholder="5 min read"
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="tags">Tags (Optional)</Label>
-            <Input
-              id="tags"
-              value={formData.tags}
-              onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
-              placeholder="mental health, therapy, wellness"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="featuredImage">Featured Image URL (Optional)</Label>
-            <Input
-              id="featuredImage"
-              value={formData.featuredImage}
-              onChange={(e) => setFormData(prev => ({ ...prev, featuredImage: e.target.value }))}
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={() => handleSubmit(isEdit)} disabled={actionLoading}>
-            {actionLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {isEdit ? 'Updating...' : 'Creating...'}
-              </>
-            ) : (
-              isEdit ? 'Update Post' : 'Create Post'
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
 
   return (
     <AdminLayout>
@@ -373,24 +521,24 @@ export default function AdminBlog() {
                         <Badge variant="outline">{post.category}</Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge className={statusColors[post.status]}>
+                        <Badge className={statusColors[post.status as keyof typeof statusColors]}>
                           {post.status.charAt(0).toUpperCase() + post.status.slice(1)}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4 text-gray-400" />
-                          <span>{formatDate(post.createdAt)}</span>
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Calendar className="mr-1 h-4 w-4" />
+                          {formatDate(post.createdAt)}
                         </div>
                       </TableCell>
                       <TableCell>
                         {post.publishedAt ? (
-                          <div className="flex items-center space-x-1">
-                            <Calendar className="h-4 w-4 text-gray-400" />
-                            <span>{formatDate(post.publishedAt)}</span>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Calendar className="mr-1 h-4 w-4" />
+                            {formatDate(post.publishedAt)}
                           </div>
                         ) : (
-                          <span className="text-gray-500">Not published</span>
+                          <span className="text-sm text-gray-400">Not published</span>
                         )}
                       </TableCell>
                       <TableCell>
@@ -440,16 +588,21 @@ export default function AdminBlog() {
           </CardContent>
         </Card>
 
-        <BlogDialog
-          isEdit={true}
+        <EditBlogDialog
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
+          formData={editFormData}
+          setFormData={setEditFormData}
+          onSubmit={() => handleSubmit(true)}
+          actionLoading={actionLoading}
         />
-
-        <BlogDialog
-          isEdit={false}
+        <CreateBlogDialog
           open={isCreateDialogOpen}
           onOpenChange={setIsCreateDialogOpen}
+          formData={createFormData}
+          setFormData={setCreateFormData}
+          onSubmit={() => handleSubmit(false)}
+          actionLoading={actionLoading}
         />
       </div>
     </AdminLayout>

@@ -1,6 +1,4 @@
-const API_BASE_URL = typeof window !== 'undefined' 
-  ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
-  : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = 'http://localhost:13001/api';
 
 // Types based on backend entities
 export interface User {
@@ -126,9 +124,9 @@ class ApiClient {
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
-    // Get token from localStorage on client side
+    // Get token from localStorage on client side (check admin_token first, then auth_token)
     if (typeof window !== 'undefined') {
-      this.token = localStorage.getItem('auth_token');
+      this.token = localStorage.getItem('admin_token') || localStorage.getItem('auth_token');
     }
   }
 
@@ -163,10 +161,14 @@ class ApiClient {
     return response.json();
   }
 
-  setToken(token: string) {
+  setToken(token: string, isAdmin: boolean = false) {
     this.token = token;
     if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', token);
+      if (isAdmin) {
+        localStorage.setItem('admin_token', token);
+      } else {
+        localStorage.setItem('auth_token', token);
+      }
     }
   }
 
@@ -174,6 +176,8 @@ class ApiClient {
     this.token = null;
     if (typeof window !== 'undefined') {
       localStorage.removeItem('auth_token');
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
     }
   }
 
@@ -184,6 +188,48 @@ class ApiClient {
       body: JSON.stringify({ email, password }),
     });
     this.setToken(response.access_token);
+    return response;
+  }
+
+  async adminLogin(email: string, password: string): Promise<AuthResponse> {
+    const response = await this.request<AuthResponse>('/auth/admin/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    this.setToken(response.access_token, true);
+    return response;
+  }
+
+  // OTP Authentication methods
+  async sendOTP(email: string): Promise<{ message: string; phone: string }> {
+    return this.request<{ message: string; phone: string }>('/auth/send-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  async verifyOTP(email: string, otp: string): Promise<AuthResponse> {
+    const response = await this.request<AuthResponse>('/auth/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp }),
+    });
+    this.setToken(response.access_token);
+    return response;
+  }
+
+  async sendAdminOTP(email: string): Promise<{ message: string; phone: string }> {
+    return this.request<{ message: string; phone: string }>('/auth/admin/send-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  async verifyAdminOTP(email: string, otp: string): Promise<AuthResponse> {
+    const response = await this.request<AuthResponse>('/auth/admin/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp }),
+    });
+    this.setToken(response.access_token, true);
     return response;
   }
 
@@ -331,34 +377,35 @@ class ApiClient {
 
   // Blog post management
   async createBlogPost(blogData: Omit<BlogPost, 'id' | 'createdAt' | 'publishedAt'>): Promise<BlogPost> {
-    return this.request<BlogPost>('/blog', {
+    return this.request<BlogPost>('/admin/blog', {
       method: 'POST',
       body: JSON.stringify(blogData),
     });
   }
 
   async updateBlogPost(id: string, blogData: Partial<BlogPost>): Promise<BlogPost> {
-    return this.request<BlogPost>(`/blog/${id}`, {
-      method: 'PATCH',
+    return this.request<BlogPost>(`/admin/blog/${id}`, {
+      method: 'PUT',
       body: JSON.stringify(blogData),
     });
   }
 
   async deleteBlogPost(id: string): Promise<void> {
-    return this.request<void>(`/blog/${id}`, {
+    return this.request<void>(`/admin/blog/${id}`, {
       method: 'DELETE',
     });
   }
 
   async publishBlogPost(id: string): Promise<BlogPost> {
-    return this.request<BlogPost>(`/blog/${id}/publish`, {
-      method: 'PATCH',
+    return this.request<BlogPost>(`/admin/blog/${id}/publish`, {
+      method: 'PUT',
     });
   }
 
   async unpublishBlogPost(id: string): Promise<BlogPost> {
-    return this.request<BlogPost>(`/blog/${id}/unpublish`, {
-      method: 'PATCH',
+    return this.request<BlogPost>(`/admin/blog/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'draft' }),
     });
   }
 
@@ -385,6 +432,27 @@ class ApiClient {
 
     return response.json();
   }
+
+  // Admin Dashboard methods
+  async getAdminDashboardStats(): Promise<any> {
+    return this.request('/admin/dashboard/stats');
+  }
+
+  async getAdminPatients(): Promise<{ patients: User[], total: number, page: number, totalPages: number }> {
+    return this.request('/admin/patients');
+  }
+
+  async getAdminAppointments(): Promise<{ appointments: Appointment[], total: number, page: number, totalPages: number }> {
+    return this.request('/admin/appointments');
+  }
+
+  async getAdminMessages(): Promise<{ messages: ContactMessage[], total: number, page: number, totalPages: number }> {
+    return this.request('/admin/messages');
+  }
+
+  async getAdminBlogPosts(): Promise<{ posts: BlogPost[], total: number, page: number, totalPages: number }> {
+    return this.request('/admin/blog');
+  }
 }
 
 // Export singleton instance
@@ -394,7 +462,15 @@ export const apiClient = new ApiClient(API_BASE_URL);
 export const api = {
   // Auth
   login: (email: string, password: string) => apiClient.login(email, password),
+  adminLogin: (email: string, password: string) => apiClient.adminLogin(email, password),
   logout: () => apiClient.clearToken(),
+  setToken: (token: string, isAdmin?: boolean) => apiClient.setToken(token, isAdmin),
+  
+  // OTP Auth
+  sendOTP: (email: string) => apiClient.sendOTP(email),
+  verifyOTP: (email: string, otp: string) => apiClient.verifyOTP(email, otp),
+  sendAdminOTP: (email: string) => apiClient.sendAdminOTP(email),
+  verifyAdminOTP: (email: string, otp: string) => apiClient.verifyAdminOTP(email, otp),
 
   // Users
   createUser: (userData: CreateUserData) => apiClient.createUser(userData),
@@ -449,6 +525,13 @@ export const api = {
 
   // File upload
   uploadImage: (file: File) => apiClient.uploadImage(file),
+
+  // Admin Dashboard methods
+  getAdminDashboardStats: () => apiClient.getAdminDashboardStats(),
+  getAdminPatients: () => apiClient.getAdminPatients(),
+  getAdminAppointments: () => apiClient.getAdminAppointments(),
+  getAdminMessages: () => apiClient.getAdminMessages(),
+  getAdminBlogPosts: () => apiClient.getAdminBlogPosts(),
 };
 
 export default apiClient; 

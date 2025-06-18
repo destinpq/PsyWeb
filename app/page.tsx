@@ -1,13 +1,13 @@
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
 import { Services } from "@/components/services"
+import { Contact } from "@/components/contact"
 import { Accomplishments } from "@/components/accomplishments"
 import { BlogPreview } from "@/components/blog-preview"
-import { Contact } from "@/components/contact"
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <main>
+    <main className="min-h-screen">
       <Hero />
       <About />
       <Services />
