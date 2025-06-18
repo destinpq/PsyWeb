@@ -74,6 +74,63 @@ export interface BlogPost {
   createdAt: string;
 }
 
+export interface CaseHistory {
+  id: string;
+  patientId: string;
+  patient?: User;
+  sessionDate: string;
+  sessionType: 'initial_assessment' | 'individual_therapy' | 'group_therapy' | 'family_therapy' | 'couples_therapy' | 'follow_up' | 'emergency' | 'medication_review';
+  sessionDuration?: number;
+  chiefComplaint: string;
+  presentingProblems?: string;
+  mentalStatusExam?: string;
+  behavioralObservations?: string;
+  mood?: string;
+  affect?: string;
+  thoughtProcess?: string;
+  thoughtContent?: string;
+  perceptionAbnormalities?: string;
+  cognitiveFunction?: string;
+  insight?: string;
+  judgment?: string;
+  riskAssessment?: string;
+  interventionsUsed?: string;
+  patientResponse?: string;
+  homework?: string;
+  treatmentGoals?: string;
+  progressNotes?: string;
+  progressLevel?: 'poor' | 'fair' | 'good' | 'excellent';
+  medications?: string;
+  sideEffects?: string;
+  socialHistory?: string;
+  familyHistory?: string;
+  medicalHistory?: string;
+  substanceUse?: string;
+  diagnosticImpression?: string;
+  treatmentPlan?: string;
+  nextSessionPlan?: string;
+  nextAppointment?: string;
+  caseStatus: 'active' | 'completed' | 'on_hold' | 'discontinued';
+  clinicianNotes?: string;
+  attachments?: string;
+  isActive: boolean;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CaseHistoryStats {
+  totalCases: number;
+  activeCases: number;
+  completedCases: number;
+  onHoldCases: number;
+  discontinuedCases: number;
+  sessionTypeBreakdown: Record<string, number>;
+  progressBreakdown: Record<string, number>;
+  averageSessionDuration: number;
+  mostRecentSession: string | null;
+}
+
 export interface CreateUserData {
   firstName: string;
   lastName: string;
@@ -104,6 +161,46 @@ export interface CreateContactMessageData {
   email: string;
   phone?: string;
   message: string;
+}
+
+export interface CreateCaseHistoryData {
+  patientId: string;
+  sessionDate: string;
+  sessionType: string;
+  sessionDuration?: number;
+  chiefComplaint: string;
+  presentingProblems?: string;
+  mentalStatusExam?: string;
+  behavioralObservations?: string;
+  mood?: string;
+  affect?: string;
+  thoughtProcess?: string;
+  thoughtContent?: string;
+  perceptionAbnormalities?: string;
+  cognitiveFunction?: string;
+  insight?: string;
+  judgment?: string;
+  riskAssessment?: string;
+  interventionsUsed?: string;
+  patientResponse?: string;
+  homework?: string;
+  treatmentGoals?: string;
+  progressNotes?: string;
+  progressLevel?: string;
+  medications?: string;
+  sideEffects?: string;
+  socialHistory?: string;
+  familyHistory?: string;
+  medicalHistory?: string;
+  substanceUse?: string;
+  diagnosticImpression?: string;
+  treatmentPlan?: string;
+  nextSessionPlan?: string;
+  nextAppointment?: string;
+  caseStatus?: string;
+  clinicianNotes?: string;
+  attachments?: string;
+  createdBy?: string;
 }
 
 export interface AuthResponse {
@@ -502,6 +599,106 @@ class ApiClient {
     return response.json();
   }
 
+  // Case History management
+  async getCaseHistories(params?: Record<string, any>): Promise<{
+    cases: CaseHistory[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
+    const queryString = params ? new URLSearchParams(params).toString() : '';
+    const url = queryString ? `/case-history?${queryString}` : '/case-history';
+    return this.request(url);
+  }
+
+  async createCaseHistory(caseData: CreateCaseHistoryData): Promise<CaseHistory> {
+    return this.request<CaseHistory>('/case-history', {
+      method: 'POST',
+      body: JSON.stringify(caseData),
+    });
+  }
+
+  async getCaseHistory(id: string): Promise<CaseHistory> {
+    return this.request<CaseHistory>(`/case-history/${id}`);
+  }
+
+  async updateCaseHistory(id: string, caseData: Partial<CreateCaseHistoryData>): Promise<CaseHistory> {
+    return this.request<CaseHistory>(`/case-history/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(caseData),
+    });
+  }
+
+  async deleteCaseHistory(id: string): Promise<void> {
+    return this.request<void>(`/case-history/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getPatientCaseHistory(patientId: string): Promise<CaseHistory[]> {
+    return this.request<CaseHistory[]>(`/case-history/patient/${patientId}`);
+  }
+
+  async getPatientCaseStats(patientId: string): Promise<CaseHistoryStats> {
+    return this.request<CaseHistoryStats>(`/case-history/patient/${patientId}/stats`);
+  }
+
+  async getRecentCases(limit?: number): Promise<CaseHistory[]> {
+    const url = limit ? `/case-history/recent?limit=${limit}` : '/case-history/recent';
+    return this.request<CaseHistory[]>(url);
+  }
+
+  async duplicateCaseHistory(id: string, sessionDate: string): Promise<CaseHistory> {
+    return this.request<CaseHistory>(`/case-history/${id}/duplicate`, {
+      method: 'POST',
+      body: JSON.stringify({ sessionDate }),
+    });
+  }
+
+  // Admin case history endpoints
+  async getAdminCaseHistories(params?: Record<string, any>): Promise<{
+    cases: CaseHistory[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
+    const queryString = params ? new URLSearchParams(params).toString() : '';
+    const url = queryString ? `/admin/case-history?${queryString}` : '/admin/case-history';
+    return this.request(url);
+  }
+
+  async createAdminCaseHistory(caseData: CreateCaseHistoryData): Promise<CaseHistory> {
+    return this.request<CaseHistory>('/admin/case-history', {
+      method: 'POST',
+      body: JSON.stringify(caseData),
+    });
+  }
+
+  async getAdminCaseHistory(id: string): Promise<CaseHistory> {
+    return this.request<CaseHistory>(`/admin/case-history/${id}`);
+  }
+
+  async updateAdminCaseHistory(id: string, caseData: Partial<CreateCaseHistoryData>): Promise<CaseHistory> {
+    return this.request<CaseHistory>(`/admin/case-history/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(caseData),
+    });
+  }
+
+  async deleteAdminCaseHistory(id: string): Promise<void> {
+    return this.request<void>(`/admin/case-history/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getAdminPatientCaseHistory(patientId: string): Promise<CaseHistory[]> {
+    return this.request<CaseHistory[]>(`/admin/case-history/patient/${patientId}`);
+  }
+
+  async getAdminPatientCaseStats(patientId: string): Promise<CaseHistoryStats> {
+    return this.request<CaseHistoryStats>(`/admin/case-history/patient/${patientId}/stats`);
+  }
+
   // Admin Dashboard methods
   async getAdminDashboardStats(): Promise<any> {
     return this.request('/admin/dashboard/stats');
@@ -597,6 +794,26 @@ export const api = {
   uploadVideo: (file: File) => apiClient.uploadVideo(file),
   uploadPdf: (file: File) => apiClient.uploadPdf(file),
   uploadMedia: (file: File) => apiClient.uploadMedia(file),
+
+  // Case History management
+  getCaseHistories: (params?: Record<string, any>) => apiClient.getCaseHistories(params),
+  createCaseHistory: (caseData: CreateCaseHistoryData) => apiClient.createCaseHistory(caseData),
+  getCaseHistory: (id: string) => apiClient.getCaseHistory(id),
+  updateCaseHistory: (id: string, caseData: Partial<CreateCaseHistoryData>) => apiClient.updateCaseHistory(id, caseData),
+  deleteCaseHistory: (id: string) => apiClient.deleteCaseHistory(id),
+  getPatientCaseHistory: (patientId: string) => apiClient.getPatientCaseHistory(patientId),
+  getPatientCaseStats: (patientId: string) => apiClient.getPatientCaseStats(patientId),
+  getRecentCases: (limit?: number) => apiClient.getRecentCases(limit),
+  duplicateCaseHistory: (id: string, sessionDate: string) => apiClient.duplicateCaseHistory(id, sessionDate),
+
+  // Admin case history management
+  getAdminCaseHistories: (params?: Record<string, any>) => apiClient.getAdminCaseHistories(params),
+  createAdminCaseHistory: (caseData: CreateCaseHistoryData) => apiClient.createAdminCaseHistory(caseData),
+  getAdminCaseHistory: (id: string) => apiClient.getAdminCaseHistory(id),
+  updateAdminCaseHistory: (id: string, caseData: Partial<CreateCaseHistoryData>) => apiClient.updateAdminCaseHistory(id, caseData),
+  deleteAdminCaseHistory: (id: string) => apiClient.deleteAdminCaseHistory(id),
+  getAdminPatientCaseHistory: (patientId: string) => apiClient.getAdminPatientCaseHistory(patientId),
+  getAdminPatientCaseStats: (patientId: string) => apiClient.getAdminPatientCaseStats(patientId),
 
   // Admin Dashboard methods
   getAdminDashboardStats: () => apiClient.getAdminDashboardStats(),
