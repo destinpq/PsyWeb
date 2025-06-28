@@ -4,34 +4,34 @@ import { Award, BookOpen, Users, Star } from "lucide-react"
 const accomplishments = [
   {
     icon: Award,
-    title: "Licensed Psychologist",
-    description: "State-licensed clinical psychologist with full practice privileges",
+    title: "Gold Medallist",
+    description: "Recognized for academic excellence during postgraduate training",
   },
   {
     icon: BookOpen,
-    title: "Published Researcher",
-    description: "Author of multiple peer-reviewed articles in clinical psychology journals",
+    title: "Course Coordinator",
+    description: "PG Diploma in Psychological Counselling Skills (PCS) - Leading educator and mentor",
   },
   {
     icon: Users,
-    title: "Community Leader",
-    description: "Active member of American Psychological Association and local mental health boards",
+    title: "Supervisor & Trainer",
+    description: "Clinical supervision for trainee therapists and postgraduate courses",
   },
   {
     icon: Star,
-    title: "Excellence in Practice",
-    description: "Recipient of Outstanding Clinical Service Award from State Psychology Board",
+    title: "Licensed Clinical Psychologist",
+    description: "Central Govt Certified Member, American Psychological Association",
   },
 ]
 
 const credentials = [
-  "Doctor of Psychology (PsyD) - Clinical Psychology",
-  "Licensed Clinical Psychologist - State Board Certified",
-  "Certified in Cognitive Behavioral Therapy (CBT)",
-  "EMDR Therapy Certification",
-  "Trauma-Informed Care Specialist",
-  "Member, American Psychological Association (APA)",
-  "Member, State Psychological Association",
+  "PsyD in Clinical Psychology - Doctorate from recognized institution (2024)",
+  "Licensed Clinical & Counseling Psychologist - Registered with RCI",
+  "Certified in Cognitive Behavioural Therapy (CBT) - Equipping effective intervention strategies",
+  "Certified in PTSD-PTMS Workshop - Advanced training at AIIMS Delhi, endorsed by ICMR (2024)",
+  "Mindfulness & Emotional Skills Facilitator - Workshops for educators, adolescents, and caregivers",
+  "Anger Management & Communication Skills Trainer - Certified to lead group-focused programs",
+  "Member, American Psychological Association",
 ]
 
 export function Accomplishments() {

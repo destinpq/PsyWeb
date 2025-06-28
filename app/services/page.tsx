@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 import { 
   Heart, 
   Clock, 
@@ -44,7 +44,21 @@ export default function ServicesPage() {
   const fetchServices = async () => {
     try {
       const data = await api.getServices()
-      setServices(data.filter(service => service.isActive))
+      // Map API services to local Service interface, fallback to defaults if API fails
+      const mappedServices = data.length > 0 
+        ? data.filter(service => service.isActive).map(service => ({
+            id: service.id,
+            name: service.name,
+            description: service.description,
+            shortDescription: service.description.substring(0, 50) + '...',
+            duration: service.duration,
+            price: service.price || 150,
+            features: service.features ? service.features.split(',').map(f => f.trim()) : ['Personalized care', 'Professional guidance', 'Evidence-based approach'],
+            category: 'individual', // Default category
+            isActive: service.isActive
+          }))
+        : defaultServices
+      setServices(mappedServices)
     } catch (error) {
       console.error('Error fetching services:', error)
       // Fallback to default services if API fails
@@ -229,78 +243,80 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* Category Tabs */}
-          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
-              {categories.map((category) => (
-                <TabsTrigger key={category.id} value={category.id} className="text-sm">
-                  <category.icon className="h-4 w-4 mr-2" />
-                  {category.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {categories.map((category) => (
+              <Button
+                key={category.id}
+                variant={activeCategory === category.id ? "default" : "outline"}
+                onClick={() => setActiveCategory(category.id)}
+                className="flex items-center gap-2"
+              >
+                <category.icon className="h-4 w-4" />
+                {category.name}
+              </Button>
+            ))}
+          </div>
 
-            <TabsContent value={activeCategory}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredServices.map((service) => {
-                  const IconComponent = getCategoryIcon(service.category)
-                  return (
-                    <Card key={service.id} className="hover:shadow-lg transition-shadow group">
-                      <CardHeader>
-                        <div className="flex items-center justify-between mb-2">
-                          <IconComponent className="h-8 w-8 text-blue-600" />
-                          <Badge variant="secondary">{service.category}</Badge>
-                        </div>
-                        <CardTitle className="text-xl">{service.name}</CardTitle>
-                        <CardDescription className="text-sm">
-                          {service.shortDescription}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                          {service.description}
-                        </p>
-                        
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center text-sm text-gray-500">
-                            <Clock className="h-4 w-4 mr-1" />
-                            {service.duration} minutes
-                          </div>
-                          <div className="text-lg font-semibold text-blue-600">
-                            ${service.price}
-                          </div>
-                        </div>
+          {/* Services Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[400px]">
+            {filteredServices.map((service) => {
+              const IconComponent = getCategoryIcon(service.category)
+              return (
+                <Card key={service.id} className="hover:shadow-lg transition-shadow group bg-white">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <IconComponent className="h-8 w-8 text-blue-600" />
+                      <Badge variant="secondary" className="capitalize">{service.category}</Badge>
+                    </div>
+                    <CardTitle className="text-xl">{service.name}</CardTitle>
+                    <CardDescription className="text-sm">
+                      {service.shortDescription}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {service.description}
+                    </p>
+                    
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="h-4 w-4 mr-1" />
+                        {service.duration} minutes
+                      </div>
+                      <div className="text-lg font-semibold text-blue-600">
+                        ₹{service.price * 75} {/* Converting to INR approximate */}
+                      </div>
+                    </div>
 
-                        <div className="mb-4">
-                          <h4 className="font-semibold text-gray-900 mb-2 text-sm">What's Included:</h4>
-                          <ul className="space-y-1">
-                            {service.features.slice(0, 3).map((feature, index) => (
-                              <li key={index} className="flex items-center text-sm text-gray-600">
-                                <CheckCircle className="h-3 w-3 text-green-500 mr-2 flex-shrink-0" />
-                                {feature}
-                              </li>
-                            ))}
-                            {service.features.length > 3 && (
-                              <li className="text-sm text-gray-500 ml-5">
-                                +{service.features.length - 3} more features
-                              </li>
-                            )}
-                          </ul>
-                        </div>
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-gray-900 mb-2 text-sm">What's Included:</h4>
+                      <ul className="space-y-1">
+                        {service.features.slice(0, 3).map((feature, index) => (
+                          <li key={index} className="flex items-center text-sm text-gray-600">
+                            <CheckCircle className="h-3 w-3 text-green-500 mr-2 flex-shrink-0" />
+                            {feature}
+                          </li>
+                        ))}
+                        {service.features.length > 3 && (
+                          <li className="text-sm text-gray-500 ml-5">
+                            +{service.features.length - 3} more features
+                          </li>
+                        )}
+                      </ul>
+                    </div>
 
-                        <Button className="w-full group-hover:bg-blue-700" asChild>
-                          <Link href={`#contact?service=${service.id}`}>
-                            Book This Service
-                            <Calendar className="ml-2 h-4 w-4" />
-                          </Link>
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )
-                })}
-              </div>
-            </TabsContent>
-          </Tabs>
+                    <Button className="w-full group-hover:bg-blue-700" asChild>
+                      <Link href="/appointments">
+                        Book This Service
+                        <Calendar className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
         </div>
       </section>
 

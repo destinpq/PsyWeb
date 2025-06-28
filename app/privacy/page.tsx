@@ -91,11 +91,11 @@ export default function PrivacyPage() {
               <p className="text-gray-600">
                 If you have any questions about this Privacy Policy, please contact us at:
               </p>
-              <div className="mt-4 space-y-2 text-gray-600">
-                <p>Email: privacy@psychology-website.com</p>
-                <p>Phone: (555) 123-4567</p>
-                <p>Address: 123 Wellness Drive, Suite 200, Mental Health Plaza, CA 90210</p>
-              </div>
+                              <div className="mt-4 space-y-2 text-gray-600">
+                  <p>Email: dr.akankshagarwal@outlook.com</p>
+                  <p>Phone: +91 7013983168 | +91 8074790542</p>
+                  <p>Address: Dr. Akanksha Agarwal's Mental Healthcare Clinic<br />1-2-217/14, Ground Floor, Rajamolian Colony, Domalguda, Himayat Nagar, Hyderabad - 500029</p>
+                </div>
             </CardContent>
           </Card>
         </div>
