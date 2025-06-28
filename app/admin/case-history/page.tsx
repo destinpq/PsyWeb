@@ -30,7 +30,7 @@ import {
   Filter, 
   Calendar, 
   Clock, 
-  User, 
+  User as UserIcon, 
   FileText,
   TrendingUp,
   BarChart3,
@@ -557,7 +557,7 @@ export default function AdminCaseHistory() {
                     <TableRow key={caseHistory.id}>
                       <TableCell>
                         <div className="flex items-center space-x-2">
-                          <User className="h-4 w-4" />
+                          <UserIcon className="h-4 w-4" />
                           <div>
                             <div className="font-medium">
                               {caseHistory.patient?.firstName} {caseHistory.patient?.lastName}
