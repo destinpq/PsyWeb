@@ -9,20 +9,20 @@ const credentials = [
   {
     icon: Star,
     title: "Licensed Clinical Psychologist",
-    description: "Psychological Assessment & Diagnosis (all age groups) • CBT, Mindfulness & Trauma-Informed Therapy • Psycho-Oncology Specialist • Family & Relationship Therapy • Adolescent Mental Health • Grief & Stress Management",
+    description: "Psychological Assessment & Diagnosis (child, adolescent, adult, geriatric) • Therapeutic Interventions – CBT, client-centered, mindfulness-based, trauma-informed care • Psycho-Oncology – Specialized support for patients undergoing cancer treatment and recovery • Family & Relationship Therapy • Adolescent & Young Adult Mental Health • Grief, Stress & Adjustment Disorders",
     gradient: "from-blue-500 to-cyan-500"
-  },
-  {
-    icon: BookOpen,
-    title: "Supervisor & Trainer",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    gradient: "from-purple-500 to-indigo-500"
   },
   {
     icon: Award,
     title: "Academician & Researcher",
     description: "Published researcher with peer-reviewed publications • Academic excellence with multiple awards • Training coordinator for counseling programs • Clinical supervision for therapists • Evidence-based practice advocate",
     gradient: "from-emerald-500 to-teal-500"
+  },
+  {
+    icon: BookOpen,
+    title: "Supervisor & Trainer",
+    description: "Seasoned supervisor and trainer with deep expertise in training psychology students, mental health professionals, educators, and volunteers across diverse populations and settings • Clinical supervision in case profiling, therapeutic intervention, and psychological assessment to postgraduate and doctoral-level psychology trainees • Training style marked by integrated blend of evidence-based practices and experiential learning with emphasis on therapeutic application, ethics, and reflective practice • Mindfulness-based emotional regulation for educators and school children • Mental health awareness sessions for community stakeholders (in collaboration with Hyderabad City Police) • Team-building and communication workshops for adolescents and volunteers • Stress management and life skills training for teachers and students • Well-being workshops for elderly populations • Anger management and self-awareness modules as part of employability and soft skills development • Associate Professor and Course Coordinator designing curriculum rooted in clinical psychology, counseling skills, and therapeutic techniques • Academic guidance extending to mentoring students in research and practicum, fostering professional competence and ethical integrity • Clinical training across premier institutions including Government Institute of Mental Health, Basavatarakam Indo-American Cancer Hospital, and Sweekaar Academy • Versatile supervision capabilities across clinical, educational, and community-based settings",
+    gradient: "from-purple-500 to-indigo-500"
   }
 ]
 
@@ -33,19 +33,15 @@ const specializations = [
     image: "/placeholder.jpg",
     gradient: "from-blue-500 to-cyan-500",
     services: [
-      "Individual Therapy",
-      "Couples Counseling", 
-      "Family Counseling",
-      "Group Therapy",
-      "Anxiety Treatment",
-      "Depression Counseling",
-      "OCD Therapy",
-      "Trauma Recovery",
-      "Grief & Loss Support",
-      "Adjustment Disorders",
+      "Anxiety, Depression, OCD, Trauma",
+      "Grief & Loss, Adjustment Disorders",
       "Relationship Counseling",
       "Adolescent & Family Therapy",
-      "Psycho-Oncology Support",
+      "Oncology-Related Psychological Support",
+      "Individual Therapy",
+      "Group Therapy",
+      "Couples Counseling",
+      "Family Counseling",
       "Wellness Coaching"
     ],
     benefits: ["Evidence-Based", "Personalized Care", "Safe Environment"]
@@ -141,11 +137,15 @@ export function About() {
         <div className={`text-center space-y-4 sm:space-y-6 mb-6 sm:mb-8 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}>
           <div className="inline-flex items-center gap-2 glass-morphism rounded-full px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium animate-glow">
             <Brain className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500" />
-            <span className="gradient-text font-semibold">About Dr. Agarwal</span>
+            <span className="gradient-text font-semibold">Licensed Clinical Psychologist</span>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
-            Meet Your
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight">
+            <span className="gradient-text">Dr. Akanksha Agarwal</span>
+          </h1>
+          
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
+            Your Trusted
             <span className="block gradient-text">Mental Health Expert</span>
           </h2>
           
@@ -267,7 +267,7 @@ export function About() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {credentials.map((credential, index) => {
               const Icon = credential.icon
               return (
@@ -275,7 +275,7 @@ export function About() {
                   key={credential.title}
                   className={`group glass-card rounded-2xl p-6 hover-lift relative overflow-hidden h-full flex flex-col ${
                     isVisible ? 'stagger-animation' : 'opacity-0'
-                  }`}
+                  } ${index === 2 ? 'md:col-span-2' : ''}`}
                   style={{ animationDelay: `${0.8 + index * 0.1}s` }}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${credential.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
@@ -322,6 +322,221 @@ export function About() {
           </p>
         </div>
 
+        {/* Published Research & Certifications */}
+        <div className={`mb-8 sm:mb-12 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: '1.0s' }}>
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 glass-morphism rounded-full px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium">
+              <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500" />
+              <span className="gradient-text font-semibold">Published Research</span>
+            </div>
+            
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 mt-4">
+              Academic
+              <span className="gradient-text"> Publications & Research</span>
+            </h3>
+            
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
+              Peer-reviewed publications demonstrating commitment to evidence-based practice and research excellence
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Publication 1 */}
+            <div className="group glass-card rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-2">
+              <a 
+                href="https://internationaljournalcorner.com/index.php/theijhss/article/view/127223/88088"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <div className="p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <BookOpen className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        Family Environment and Mental Well-Being among Adolescents
+                      </h4>
+                      <p className="text-sm text-blue-600 font-medium">IJHSS • Authored by Dr. Akanksha Agarwal with Dr. Usha Chivukula</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <p className="text-gray-700 leading-relaxed">
+                      Research examining the quality of relationships with parents as a major determining factor of mental well-being in adolescents. 
+                      This study focuses on how family environment influences mental health outcomes in the 13-18 age group.
+                    </p>
+                    
+                    {/* Research Preview */}
+                    <div className="relative bg-white rounded-xl overflow-hidden border-2 border-gray-200 group-hover:border-blue-300 transition-all shadow-inner">
+                      <div className="aspect-[4/3] p-4">
+                        <div className="w-full h-full bg-gradient-to-b from-blue-50 to-white rounded-lg border border-gray-200 flex flex-col">
+                          {/* Header */}
+                          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 text-center">
+                            <p className="text-xs font-medium">THE INTERNATIONAL JOURNAL OF HUMANITIES & SOCIAL STUDIES</p>
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex-1 p-4 space-y-3">
+                            <h5 className="text-lg font-bold text-gray-900 text-center leading-tight">
+                              Family Environment and Mental Well-Being among Adolescents
+                            </h5>
+                            
+                            <div className="bg-gray-50 p-3 rounded-lg">
+                              <div className="space-y-2 text-xs">
+                                <p><span className="font-semibold">Dr. Akanksha Agarwal</span> - School Counselor, Department of Psychology</p>
+                                <p><span className="font-semibold">Dr. Usha Chivukula</span> - Assistant Professor, Department of Psychology</p>
+                                <p className="text-gray-600">St. Francis Degree College for Women, Hyderabad, Telangana, India</p>
+                              </div>
+                            </div>
+                            
+                            <div className="text-xs text-gray-700 space-y-1">
+                              <p><span className="font-semibold">Abstract:</span> The quality of relationships with parents is a major determining factor of mental well-being in adolescents...</p>
+                              <p className="text-gray-500">Study examines family environment's impact on mental health outcomes among 153 adolescents aged 13-18 years.</p>
+                            </div>
+                            
+                            <div className="flex items-center justify-center gap-2 text-xs text-blue-600">
+                              <BookOpen className="h-3 w-3" />
+                              <span>Click to view full research article</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-amber-500" />
+                        <span>Peer-Reviewed</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Award className="h-4 w-4 text-purple-500" />
+                        <span>Adolescent Psychology</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Users className="h-4 w-4 text-blue-500" />
+                        <span>Family Research</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 pt-6 border-t border-gray-200/50">
+                    <div className="flex items-center justify-between">
+                      <span className="text-blue-600 font-semibold group-hover:text-blue-800 transition-colors">
+                        View Full Publication
+                      </span>
+                      <ArrowRight className="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="h-2 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+              </a>
+            </div>
+
+            {/* Publication 2 */}
+            <div className="group glass-card rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-2">
+              <a 
+                href="https://www.worldwidejournals.com/global-journal-for-research-analysis-GJRA/file.php?val=May_2015_1432202163__149.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <div className="p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Award className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors">
+                        Positive Psychology Interventions in Geriatrics
+                      </h4>
+                      <p className="text-sm text-emerald-600 font-medium">GJRA • Authored by Akanksha Agarwal with Dr. Usha Chivukula</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <p className="text-gray-700 leading-relaxed">
+                      Research focusing on positive psychology interventions as modifiers of interpersonal needs, gerotranscendence, and well-being in geriatrics. 
+                      This study explores evidence-based approaches to enhance mental health in older adults.
+                    </p>
+                    
+                    {/* Research Preview */}
+                    <div className="relative bg-white rounded-xl overflow-hidden border-2 border-gray-200 group-hover:border-emerald-300 transition-all shadow-inner">
+                      <div className="aspect-[4/3] p-4">
+                        <div className="w-full h-full bg-gradient-to-b from-emerald-50 to-white rounded-lg border border-gray-200 flex flex-col">
+                          {/* Header */}
+                          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-3 rounded-t-lg">
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs font-medium">Research Paper</p>
+                              <p className="text-xs font-medium">Psychology</p>
+                            </div>
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex-1 p-4 space-y-3">
+                            <h5 className="text-lg font-bold text-gray-900 text-center leading-tight">
+                              Positive Psychology Interventions: Modifiers of Interpersonal Needs, Gerotranscendence, and Well-Being in Geriatrics
+                            </h5>
+                            
+                            <div className="bg-gray-50 p-3 rounded-lg">
+                              <div className="space-y-2 text-xs">
+                                <p><span className="font-semibold">Dr. Akanksha Agarwal</span> - Post Graduate Student, Department of Psychology</p>
+                                <p><span className="font-semibold">Dr. Usha Chivukula</span> - Assistant Professor, Department of Psychology St. Francis College</p>
+                                <p><span className="font-semibold">Tina Fernandes</span> - Assistant Professor, Head of Department</p>
+                                <p className="text-gray-600">St. Francis College, Begumpet, Hyderabad</p>
+                              </div>
+                            </div>
+                            
+                            <div className="text-xs text-gray-700 space-y-1">
+                              <p><span className="font-semibold">ABSTRACT:</span> The present study focuses on positive psychology interventions as modifiers of interpersonal needs, gerotranscendence and well-being...</p>
+                              <p className="text-gray-500">Study examines well-being enhancement techniques for elderly populations using positive psychology approaches.</p>
+                            </div>
+                            
+                            <div className="flex items-center justify-center gap-2 text-xs text-emerald-600">
+                              <BookOpen className="h-3 w-3" />
+                              <span>Click to view full research paper</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-amber-500" />
+                        <span>Research Article</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <BookOpen className="h-4 w-4 text-emerald-500" />
+                        <span>Geriatric Psychology</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Heart className="h-4 w-4 text-pink-500" />
+                        <span>Positive Psychology</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 pt-6 border-t border-gray-200/50">
+                    <div className="flex items-center justify-between">
+                      <span className="text-emerald-600 font-semibold group-hover:text-emerald-800 transition-colors">
+                        View Full Publication
+                      </span>
+                      <ArrowRight className="h-5 w-5 text-emerald-600 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Specializations Tabbed Interface */}
         <div className={`text-center ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: '1.2s' }}>
           <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 max-w-6xl mx-auto">
@@ -364,9 +579,9 @@ export function About() {
                    }`}
                 >
                   <div className="glass-morphism rounded-xl p-6 sm:p-8">
-                    <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+                    <div className="grid grid-cols-1 gap-6 sm:gap-8">
                       {/* Header Section */}
-                      <div className="md:col-span-3 text-center">
+                      <div className="text-center">
                         <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${specialization.gradient} rounded-2xl mb-4`}>
                           <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                         </div>
@@ -379,45 +594,49 @@ export function About() {
                       </div>
                       
                       {/* Services Grid */}
-                      <div className="md:col-span-2">
-                        <h5 className="text-lg font-semibold text-gray-800 mb-4 text-left">Services Offered:</h5>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <h5 className="text-lg font-semibold text-gray-800 mb-6 text-left">Services Offered:</h5>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {specialization.services.map((service, idx) => (
-                            <div key={idx} className="flex items-start gap-3 p-3 bg-white/50 rounded-lg hover:bg-white/80 transition-colors">
+                            <div key={idx} className="flex items-start gap-3 p-4 bg-white/50 rounded-lg hover:bg-white/80 transition-colors text-left">
                               <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 bg-gradient-to-r ${specialization.gradient}`}></div>
-                              <span className="text-sm font-medium text-gray-700">{service}</span>
+                              <span className="text-sm font-medium text-gray-700 text-left">{service}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                       
                       {/* Benefits & CTA */}
-                      <div className="space-y-4">
-                        <h5 className="text-lg font-semibold text-gray-800 text-left">Key Benefits:</h5>
-                        <div className="space-y-3">
-                          {specialization.benefits.map((benefit, idx) => (
-                            <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 rounded-lg">
-                              <div className={`w-6 h-6 rounded-full bg-gradient-to-r ${specialization.gradient} flex items-center justify-center flex-shrink-0`}>
-                                <Star className="w-3 h-3 text-white" />
-                              </div>
-                              <span className="text-sm font-medium text-gray-700">{benefit}</span>
+                      <div className="mt-8">
+                        <div className="grid md:grid-cols-2 gap-8">
+                          <div>
+                            <h5 className="text-lg font-semibold text-gray-800 mb-4 text-left">Key Benefits:</h5>
+                            <div className="space-y-3">
+                              {specialization.benefits.map((benefit, idx) => (
+                                <div key={idx} className="flex items-center gap-3 p-3 bg-white/50 rounded-lg text-left">
+                                  <div className={`w-6 h-6 rounded-full bg-gradient-to-r ${specialization.gradient} flex items-center justify-center flex-shrink-0`}>
+                                    <Star className="w-3 h-3 text-white" />
+                                  </div>
+                                  <span className="text-sm font-medium text-gray-700">{benefit}</span>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                        
-                        <div className="pt-4 space-y-3">
-                          <Button className={`w-full bg-gradient-to-r ${specialization.gradient} hover:scale-105 transition-transform`} asChild>
-                            <Link href="/appointments">
-                              <Calendar className="mr-2 h-4 w-4" />
-                              Book Consultation
-                            </Link>
-                          </Button>
-                          <Button variant="outline" className="w-full" asChild>
-                            <Link href="/services">
-                              Learn More
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                          </Button>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            <Button className={`w-full bg-gradient-to-r ${specialization.gradient} hover:scale-105 transition-transform`} asChild>
+                              <Link href="/appointments">
+                                <Calendar className="mr-2 h-4 w-4" />
+                                Book Consultation
+                              </Link>
+                            </Button>
+                            <Button variant="outline" className="w-full" asChild>
+                              <Link href="/services">
+                                Learn More
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                              </Link>
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>

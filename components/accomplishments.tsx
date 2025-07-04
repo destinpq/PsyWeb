@@ -1,29 +1,20 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Award, BookOpen, Users, Star } from "lucide-react"
+import { Award, BookOpen, Users, Star, Trophy, Brain, Shield, CheckCircle } from "lucide-react"
 
 const accomplishments = [
-  {
-    icon: Star,
-    title: "Licensed Clinical Psychologist",
-    description: "Psychological Assessment & Diagnosis (child, adolescent, adult, geriatric) • Therapeutic Interventions – CBT, client-centered, mindfulness-based, trauma-informed care • Psycho-Oncology – Specialized support for patients undergoing cancer treatment and recovery • Family & Relationship Therapy • Adolescent & Young Adult Mental Health • Grief, Stress & Adjustment Disorders",
-  },
-  {
-    icon: BookOpen,
-    title: "Academician & Researcher",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  },
-  {
-    icon: Award,
-    title: "Professional Achievements",
-    description: "Gold Medallist for academic excellence during postgraduate training • Course Coordinator for PG Diploma in Psychological Counselling Skills • Clinical supervision for trainee therapists and postgraduate courses • Central Govt Certified Member, American Psychological Association • Published researcher with multiple peer-reviewed publications • Award recipient for outstanding contributions to mental health field",
-  },
+  "Gold Medallist for academic excellence during postgraduate training",
+  "Course Coordinator for PG Diploma in Psychological Counselling Skills",
+  "Clinical supervision for trainee therapists and postgraduate courses",
+  "Central Govt Certified Member, American Psychological Association",
+  "Published researcher with multiple peer-reviewed publications",
+  "Award recipient for outstanding contributions to mental health field"
 ]
 
 const credentials = [
   "PsyD in Clinical Psychology - Doctorate from recognized institution (2024)",
   "Licensed Clinical & Counseling Psychologist - Registered with RCI",
   "Certified in Cognitive Behavioural Therapy (CBT) - Equipping effective intervention strategies",
-  "Certified in PTSD-PTMS Workshop - Advanced training at AIIMS Delhi, endorsed by ICMR (2024)",
+  "Certified in rTMS Workshop - Advanced training at AIIMS Delhi, endorsed by ICMR (2024)",
   "Mindfulness & Emotional Skills Facilitator - Workshops for educators, adolescents, and caregivers",
   "Anger Management & Communication Skills Trainer - Certified to lead group-focused programs",
   "Member, American Psychological Association",
@@ -31,34 +22,73 @@ const credentials = [
 
 export function Accomplishments() {
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Professional Accomplishments</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 text-sm font-medium mb-6 border border-white/30">
+            <Trophy className="h-4 w-4 text-purple-500" />
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold">
+              Professional Excellence
+            </span>
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            Professional
+            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Accomplishments
+            </span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Recognized expertise and commitment to excellence in mental health care
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {accomplishments.map((item, index) => (
-            <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
-              <CardContent className="space-y-4">
-                <item.icon className="h-12 w-12 text-primary mx-auto" />
-                <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Professional Accomplishments */}
+        <div className="mb-16">
+          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl rounded-3xl overflow-hidden">
+            <CardContent className="p-8 lg:p-12">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center">
+                  <Award className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">Key Achievements</h3>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {accomplishments.map((accomplishment, index) => (
+                  <div key={index} className="group flex items-start space-x-4 p-4 rounded-2xl bg-gradient-to-r from-white/50 to-white/30 border border-white/20 hover:from-white/80 hover:to-white/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <CheckCircle className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-700 font-medium leading-relaxed group-hover:text-gray-900 transition-colors">
+                        {accomplishment}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="bg-secondary/30 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Credentials & Certifications</h3>
-          <div className="grid md:grid-cols-2 gap-4">
+        {/* Credentials & Certifications */}
+        <div className="bg-gradient-to-br from-white/80 to-gray-50/80 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-white/30 shadow-xl">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">Credentials & Certifications</h3>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6">
             {credentials.map((credential, index) => (
-              <div key={index} className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
-                <span className="text-gray-700">{credential}</span>
+              <div key={index} className="group flex items-start space-x-4 p-4 rounded-2xl bg-white/50 border border-white/20 hover:bg-white/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+                <span className="text-gray-700 font-medium leading-relaxed group-hover:text-gray-900 transition-colors">
+                  {credential}
+                </span>
               </div>
             ))}
           </div>
