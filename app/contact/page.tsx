@@ -54,7 +54,7 @@ export default function ContactPage() {
                       <p className="font-medium text-gray-900 text-sm sm:text-base">Address</p>
                       <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
                         Dr. Akanksha Agarwal's Mental Healthcare Clinic<br />
-                        1-2-217/14, Ground Floor, Rajamolian Colony<br />
+                        1-2-217/14, Ground Floor, Rajamanohar Colony<br />
                         Domalguda, Himayat Nagar, Hyderabad - 500029
                       </p>
                     </div>

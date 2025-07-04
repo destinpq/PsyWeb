@@ -3,24 +3,19 @@ import { Award, BookOpen, Users, Star } from "lucide-react"
 
 const accomplishments = [
   {
-    icon: Award,
-    title: "Gold Medallist",
-    description: "Recognized for academic excellence during postgraduate training",
+    icon: Star,
+    title: "Licensed Clinical Psychologist",
+    description: "Psychological Assessment & Diagnosis (child, adolescent, adult, geriatric) • Therapeutic Interventions – CBT, client-centered, mindfulness-based, trauma-informed care • Psycho-Oncology – Specialized support for patients undergoing cancer treatment and recovery • Family & Relationship Therapy • Adolescent & Young Adult Mental Health • Grief, Stress & Adjustment Disorders",
   },
   {
     icon: BookOpen,
-    title: "Course Coordinator",
-    description: "PG Diploma in Psychological Counselling Skills (PCS) - Leading educator and mentor",
+    title: "Academician & Researcher",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   },
   {
-    icon: Users,
-    title: "Supervisor & Trainer",
-    description: "Clinical supervision for trainee therapists and postgraduate courses",
-  },
-  {
-    icon: Star,
-    title: "Licensed Clinical Psychologist",
-    description: "Central Govt Certified Member, American Psychological Association",
+    icon: Award,
+    title: "Professional Achievements",
+    description: "Gold Medallist for academic excellence during postgraduate training • Course Coordinator for PG Diploma in Psychological Counselling Skills • Clinical supervision for trainee therapists and postgraduate courses • Central Govt Certified Member, American Psychological Association • Published researcher with multiple peer-reviewed publications • Award recipient for outstanding contributions to mental health field",
   },
 ]
 
@@ -45,7 +40,7 @@ export function Accomplishments() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {accomplishments.map((item, index) => (
             <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
               <CardContent className="space-y-4">

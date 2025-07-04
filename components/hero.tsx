@@ -36,7 +36,7 @@ export function Hero() {
             <div className="space-y-3 sm:space-y-4">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
                 <span className="block text-gray-900 stagger-animation">Dr. Akanksha</span>
-                <span className="block gradient-text stagger-animation">Agarwal</span>
+                <span className="block gradient-text stagger-animation" style={{ height: '100px' }}>Agarwal</span>
                 <span className="block text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 font-medium mt-2 sm:mt-4 stagger-animation">
                   PsyD, Licensed Clinical Psychologist
                 </span>
@@ -60,12 +60,7 @@ export function Hero() {
                   <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Button size="sm" variant="outline" className="glass-card hover-lift border-2 border-purple-200/50 hover:border-purple-300/70 sm:size-lg" asChild>
-                <Link href="/contact">
-                  <MessageCircle className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  Free Consultation
-                </Link>
-              </Button>
+              
             </div>
 
             {/* Trust indicators */}
@@ -100,10 +95,10 @@ export function Hero() {
           <div className={`relative order-first lg:order-last ${isVisible ? 'animate-scale-in' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
             <div className="relative">
               {/* Main image container */}
-              <div className="relative z-10 glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 hover-lift">
-                <div className="aspect-square bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 rounded-xl sm:rounded-2xl flex items-center justify-center relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="rounded-xl sm:rounded-2xl flex items-center justify-center relative overflow-hidden" style={{ width: '32em', height: '36em' }}>
                   <img
-                    src="/logo.jpg"
+                    src="/1.jpg" 
                     alt="Dr. Akanksha Agarwal - Professional Psychologist"
                     className="w-full h-full object-cover rounded-xl sm:rounded-2xl"
                     onError={(e) => {
@@ -117,31 +112,13 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Floating cards */}
-              <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 glass-morphism rounded-xl sm:rounded-2xl p-3 sm:p-4 animate-float" style={{ animationDelay: '1s' }}>
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="w-6 h-6 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg sm:rounded-xl flex items-center justify-center">
-                    <Calendar className="h-3 w-3 sm:h-5 sm:w-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-xs sm:text-sm font-bold text-gray-900">Flexible</div>
-                    <div className="text-xs text-gray-600">Online & In-person</div>
-                  </div>
-                </div>
-              </div>
-
+             
               {/* Background decoration */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-2xl sm:rounded-3xl blur-2xl -z-10 transform rotate-6"></div>
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-4 h-6 sm:w-6 sm:h-10 border-2 border-gray-300 rounded-full flex justify-center">
-            <div className="w-0.5 h-2 sm:w-1 sm:h-3 bg-gradient-to-b from-purple-400 to-pink-400 rounded-full mt-1 sm:mt-2 animate-pulse"></div>
-          </div>
-        </div>
       </div>
 
       {/* Additional decorative elements */}

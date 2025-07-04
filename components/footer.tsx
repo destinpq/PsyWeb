@@ -159,7 +159,7 @@ export function Footer() {
                       <p className="text-xs sm:text-sm text-gray-400">Location</p>
                       <p className="text-white font-medium text-sm sm:text-base leading-relaxed">
                         1-2-217/14, Ground Floor<br />
-                        Rajamolian Colony, Domalguda<br />
+                        Rajamanohar Colony, Domalguda<br />
                         Himayat Nagar, Hyderabad - 500029
                       </p>
                     </div>

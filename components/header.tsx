@@ -20,7 +20,7 @@ export function Header() {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-24">
           
           {/* Logo */}
           <div className="flex items-center">
@@ -28,10 +28,10 @@ export function Header() {
               <Image
                 src="/logo.jpg"
                 alt="Dr. Akanksha Agarwal's Mental Healthcare Clinic Logo"
-                width={200}
-                height={50}
+                width={500}
+                height={150}
                 priority
-                className="h-10 w-auto"
+                className="h-20 w-auto object-contain max-w-xs"
               />
             </Link>
           </div>

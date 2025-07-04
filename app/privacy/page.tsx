@@ -94,7 +94,7 @@ export default function PrivacyPage() {
                               <div className="mt-4 space-y-2 text-gray-600">
                   <p>Email: dr.akankshagarwal@outlook.com</p>
                   <p>Phone: +91 7013983168 | +91 8074790542</p>
-                  <p>Address: Dr. Akanksha Agarwal's Mental Healthcare Clinic<br />1-2-217/14, Ground Floor, Rajamolian Colony, Domalguda, Himayat Nagar, Hyderabad - 500029</p>
+                  <p>Address: Dr. Akanksha Agarwal's Mental Healthcare Clinic<br />1-2-217/14, Ground Floor, Rajamanohar Colony, Domalguda, Himayat Nagar, Hyderabad - 500029</p>
                 </div>
             </CardContent>
           </Card>
