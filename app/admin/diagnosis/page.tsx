@@ -76,7 +76,7 @@ export default function DiagnosisPortal() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [selectedDiagnosis, setSelectedDiagnosis] = useState<Diagnosis | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [isWhatsAppDialogOpen, setIsWhatsAppDialogOpen] = useState(false)
+
 
   const [formData, setFormData] = useState({
     patientId: '',
@@ -173,40 +173,7 @@ export default function DiagnosisPortal() {
     }
   }
 
-  const sendWhatsAppReport = async (diagnosis: Diagnosis) => {
-    if (!diagnosis.patient.phone) {
-      alert('Patient phone number not available')
-      return
-    }
 
-    try {
-      const reportData = {
-        patientName: `${diagnosis.patient.firstName} ${diagnosis.patient.lastName}`,
-        reportType: 'Diagnosis Report',
-        summary: diagnosis.description,
-        recommendations: diagnosis.treatmentPlan ? diagnosis.treatmentPlan.split('\n') : [],
-        nextSteps: diagnosis.followUpDate ? `Follow-up scheduled for ${diagnosis.followUpDate}` : 'Follow-up to be scheduled'
-      }
-
-      const response = await fetch('/api/admin/whatsapp/analysis-report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phoneNumber: diagnosis.patient.phone,
-          reportData
-        })
-      })
-
-      if (response.ok) {
-        alert('Report sent via WhatsApp successfully!')
-      } else {
-        alert('Failed to send WhatsApp message')
-      }
-    } catch (error) {
-      console.error('Failed to send WhatsApp report:', error)
-      alert('Failed to send WhatsApp message')
-    }
-  }
 
   const resetForm = () => {
     setFormData({
@@ -561,16 +528,7 @@ export default function DiagnosisPortal() {
                           <Edit className="h-4 w-4" />
                         </Button>
                         
-                        {diagnosis.patient.phone && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => sendWhatsAppReport(diagnosis)}
-                            className="text-green-600 hover:text-green-700"
-                          >
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
-                        )}
+
                       </div>
                     </TableCell>
                   </TableRow>

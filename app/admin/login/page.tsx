@@ -116,8 +116,8 @@ export default function AdminLogin() {
             <CardTitle className="text-2xl font-bold text-gray-900">Admin Login</CardTitle>
             <CardDescription>
               {step === 'email' 
-                ? 'Enter your email to receive WhatsApp OTP' 
-                : 'Enter the OTP sent to your WhatsApp'
+                ? 'Enter your email to receive OTP' 
+                : 'Enter the OTP sent to your phone'
               }
             </CardDescription>
           </div>
@@ -157,7 +157,7 @@ export default function AdminLogin() {
                 ) : (
                   <div className="flex items-center gap-2">
                     <MessageCircle className="w-4 h-4" />
-                    Send WhatsApp OTP
+                    Send OTP
                   </div>
                 )}
               </Button>
